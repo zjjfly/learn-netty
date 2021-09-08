@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration name="baseConf" status="warn" monitorInterval="30">
+    <Appenders>
+        <Console name="Console">
+            <!--
+                设置 onMismatch="NEUTRAL" 可以让日志经过后续的过滤器
+                最后一个过滤器建议设置 onMismatch="DENY", 不然日志就输出了。
+            -->
+            <Filters>
+                <!-- 从大到小：error, warn, info, debug, trace -->
+                <LevelRangeFilter minLevel="error" maxLevel="info" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                <!-- 只允许在每天的 8点~8点半 之间输出日志 -->
+                <TimeFilter start="08:00:00" end="08:30:00" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" charset="UTF-8"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
