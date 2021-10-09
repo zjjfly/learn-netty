@@ -1,16 +1,15 @@
 package com.github.zjjfly.nia.ch5;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.util.ByteProcessor;
-import lombok.extern.log4j.Log4j2;
-import org.junit.Test;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Random;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufProcessor;
+import io.netty.buffer.Unpooled;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
+import lombok.extern.log4j.Log4j2;
+import org.junit.Test;
 
 /**
  * @author zjjfly
@@ -48,7 +47,7 @@ public class ByteBufOperation {
         ByteBuf byteBuf = Unpooled.copiedBuffer("test\n", StandardCharsets.UTF_8);
         assertEquals(byteBuf.indexOf(0, 4, (byte) 116), 0);
         //使用ByteProcessor查找unix的换行符
-        assertEquals(byteBuf.forEachByte(ByteProcessor.FIND_LF), 4);
+        assertEquals(byteBuf.forEachByte(ByteBufProcessor.FIND_LF), 4);
     }
 
     /**

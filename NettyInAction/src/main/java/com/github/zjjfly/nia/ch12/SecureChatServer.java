@@ -4,7 +4,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 import lombok.extern.log4j.Log4j2;
 
@@ -39,7 +38,7 @@ public class SecureChatServer extends ChatServer {
         SelfSignedCertificate cert;
         try {
             cert = new SelfSignedCertificate();
-            SslContext context = SslContextBuilder.forServer(cert.certificate(), cert.privateKey()).build();
+            SslContext context = SslContext.newServerContext(cert.certificate(), cert.privateKey());
             final SecureChatServer endpoint = new SecureChatServer(context);
             ChannelFuture future = endpoint.start(
                     new InetSocketAddress(port));

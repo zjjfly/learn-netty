@@ -10,15 +10,14 @@ import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderUtil;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedNioFile;
-
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
@@ -56,7 +55,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
         if (wsUri.equalsIgnoreCase(request.uri())) {
             ctx.fireChannelRead(request.retain());
         } else {
-            if (HttpUtil.is100ContinueExpected(request)) {
+            if (HttpHeaderUtil.is100ContinueExpected(request)) {
                 send100Continue(ctx);
             }
             RandomAccessFile file = new RandomAccessFile(INDEX, "r");
@@ -65,7 +64,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
             response.headers().set(
                     HttpHeaderNames.CONTENT_TYPE,
                     "text/html; charset=UTF-8");
-            boolean keepAlive = HttpUtil.isKeepAlive(request);
+            boolean keepAlive = HttpHeaderUtil.isKeepAlive(request);
             if (keepAlive) {
                 response.headers().set(
                         HttpHeaderNames.CONTENT_LENGTH, file.length() + "");
